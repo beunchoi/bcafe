@@ -25,4 +25,8 @@ public class Board extends Timestamp {
   public Board(String boardNm) {
     this.boardNm = boardNm;
   }
+
+  public void updateBoard(String boardNm) {
+    this.boardNm = boardNm;
+  }
 }
