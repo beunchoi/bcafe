@@ -30,4 +30,13 @@ public class BoardService {
 
     return new BoardResponseDto(board.getBoardNm());
   }
+
+  @Transactional
+  public BoardResponseDto deleteBoard(Long boardId) {
+    Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다."));
+
+    boardRepository.delete(board);
+
+    return new BoardResponseDto(board.getBoardNm());
+  }
 }
