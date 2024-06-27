@@ -16,15 +16,16 @@ public class BoardService {
 
   @Transactional
   public BoardResponseDto createBoard(BoardRequestDto boardRequestDto) {
-    Board board = new Board(boardRequestDto.getBoardNm());
 
-    Board savedBoard = boardRepository.save(board);
+    Board savedBoard = boardRepository.save(new Board(boardRequestDto.getBoardNm()));
 
     return new BoardResponseDto(savedBoard.getBoardNm());
   }
+
   @Transactional
   public BoardResponseDto updateBoard(Long boardId, BoardRequestDto boardRequestDto) {
-    Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다."));
+
+    Board board = findBoard(boardId);
 
     board.updateBoard(boardRequestDto.getBoardNm());
 
@@ -33,10 +34,17 @@ public class BoardService {
 
   @Transactional
   public BoardResponseDto deleteBoard(Long boardId) {
-    Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다."));
+
+    Board board = findBoard(boardId);
 
     boardRepository.delete(board);
 
     return new BoardResponseDto(board.getBoardNm());
+  }
+
+  private Board findBoard(Long boardId) {
+
+    return boardRepository.findById(boardId)
+        .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 게시판입니다."));
   }
 }
